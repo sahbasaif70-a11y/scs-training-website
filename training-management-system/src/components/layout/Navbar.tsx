@@ -8,7 +8,7 @@ import {
   CloseOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import scsLogo from "../../assets/scs logo.png";
@@ -25,14 +25,10 @@ const trainings = [
   { key: "fullstack", label: "Full Stack Development" },
 ];
 
-const mainLinks = [
-  { label: "Home", path: "/" },
-  { label: "Contact Us", path: "/contact" },
-];
-
 function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const closeMenu = () => {
     setOpen(false);
@@ -41,16 +37,31 @@ function Navbar() {
   const shortCourseMenu = {
     items: shortCourses.map((course) => ({
       key: course.key,
-      label: course.label,
+      label: (
+        <Link to="/short-courses" className="no-underline text-slate-800 block w-full">
+          {course.label}
+        </Link>
+      ),
     })),
   };
 
   const trainingMenu = {
     items: trainings.map((training) => ({
       key: training.key,
-      label: training.label,
+      label: (
+        <Link to="/trainings" className="no-underline text-slate-800 block w-full">
+          {training.label}
+        </Link>
+      ),
     })),
   };
+
+  const getNavItemClass = (isActive: boolean) =>
+    `oswald-font flex h-20 items-center justify-center gap-2 border-0 px-6 !text-[22px] !font-normal no-underline transition-colors duration-200 cursor-pointer ${
+      isActive
+        ? "bg-orange-500 !text-white"
+        : "bg-white text-slate-900 hover:bg-orange-300 hover:!text-white"
+    }`;
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
@@ -131,11 +142,7 @@ function Navbar() {
             {/* Home */}
             <Link
               to="/"
-              className={`oswald-font flex h-20 min-w-[115px] items-center px-6 text-[28px] font-normal no-underline transition-colors duration-200 ${
-                location.pathname === "/"
-                  ? "bg-orange-500 text-white"
-                   : "bg-white text-slate-900 hover:bg-orange-300 hover:text-white"
-              }`}
+              className={getNavItemClass(location.pathname === "/")}
             >
               Home
             </Link>
@@ -148,14 +155,11 @@ function Navbar() {
             >
               <button
                 type="button"
-                className={`oswald-font flex h-20 min-w-[190px] items-center justify-center gap-3 border-0 px-6 text-[28px] font-normal transition-colors duration-200 ${
-        location.pathname.startsWith("/short-courses")
-          ? "bg-orange-500 text-white"
-          : "bg-white text-slate-900 hover:bg-orange-300 hover:text-white"
-      }`}
-    >
-                Short Courses
-                <DownOutlined className="text-sm" />
+                onClick={() => navigate("/short-courses")}
+                className={getNavItemClass(location.pathname.startsWith("/short-courses"))}
+              >
+                <span>Short Courses</span>
+                <DownOutlined className="text-xs" />
               </button>
             </Dropdown>
 
@@ -167,26 +171,19 @@ function Navbar() {
             >
               <button
                 type="button"
-               className={`oswald-font flex h-20 min-w-[180px] items-center justify-center gap-3 border-0 px-6 text-[28px] font-normal transition-colors duration-200 ${
-        location.pathname.startsWith("/trainings")
-          ? "bg-orange-500 text-white"
-          : "bg-white text-slate-900 hover:bg-orange-300 hover:text-white"
-      }`}
-    >
-                Trainings
-                <DownOutlined className="text-sm" />
+                onClick={() => navigate("/trainings")}
+                className={getNavItemClass(location.pathname.startsWith("/trainings"))}
+              >
+                <span>Trainings</span>
+                <DownOutlined className="text-xs" />
               </button>
             </Dropdown>
 
             {/* Contact */}
             <Link
               to="/contact"
-              className={`oswald-font flex h-20 min-w-[160px] items-center justify-center px-6 text-[28px] font-normal no-underline transition-colors duration-200 ${
-      location.pathname === "/contact"
-        ? "bg-orange-500 text-white"
-        : "bg-white text-slate-900 hover:bg-orange-300 hover:text-white"
-    }`}
-  >
+              className={getNavItemClass(location.pathname === "/contact")}
+            >
               Contact Us
             </Link>
 
@@ -243,32 +240,44 @@ function Navbar() {
           </Link>
 
           <div className="border-b border-gray-100 py-2">
-            <div className="px-2 py-3 font-semibold text-slate-900">
+            <Link
+              to="/short-courses"
+              onClick={closeMenu}
+              className="block px-2 py-3 font-semibold text-slate-900 no-underline hover:text-orange-500"
+            >
               Short Courses
-            </div>
+            </Link>
 
             {shortCourses.map((course) => (
-              <div
+              <Link
                 key={course.key}
-                className="px-5 py-2.5 text-sm text-gray-600"
+                to="/short-courses"
+                onClick={closeMenu}
+                className="block px-5 py-2.5 text-sm text-gray-600 no-underline hover:text-orange-500"
               >
                 {course.label}
-              </div>
+              </Link>
             ))}
           </div>
 
           <div className="border-b border-gray-100 py-2">
-            <div className="px-2 py-3 font-semibold text-slate-900">
+            <Link
+              to="/trainings"
+              onClick={closeMenu}
+              className="block px-2 py-3 font-semibold text-slate-900 no-underline hover:text-orange-500"
+            >
               Trainings
-            </div>
+            </Link>
 
             {trainings.map((training) => (
-              <div
+              <Link
                 key={training.key}
-                className="px-5 py-2.5 text-sm text-gray-600"
+                to="/trainings"
+                onClick={closeMenu}
+                className="block px-5 py-2.5 text-sm text-gray-600 no-underline hover:text-orange-500"
               >
                 {training.label}
-              </div>
+              </Link>
             ))}
           </div>
 
