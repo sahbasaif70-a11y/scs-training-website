@@ -38,7 +38,7 @@ function CallToAction() {
           </Link>
 
           <a
-            href="https://wa.me/923364314345"
+            href="https://wa.me/923095982583"
             target="_blank"
             rel="noreferrer"
             className="oswald-font flex items-center gap-2 rounded-lg bg-emerald-500 px-7 py-3 text-lg font-bold text-white shadow-xl transition-all hover:bg-emerald-600 hover:scale-105 no-underline"

@@ -4,8 +4,8 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 const categories = [
   {
     id: 1,
-    title: "Graphic Design & Creative Arts",
-    coursesCount: "5 Courses",
+    title: "SEO & Digital Marketing ",
+    coursesCount: "3",
     image:
       "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=600",
     description: "UI/UX, Illustrator, Photoshop, Motion Graphics & Video Editing.",
@@ -13,14 +13,14 @@ const categories = [
   {
     id: 2,
     title: "Web & Software Development",
-    coursesCount: "8 Courses",
+    coursesCount: "3 Courses",
     image:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600",
     description: "Full Stack Web Development, React, Node.js, Python & MERN.",
   },
   {
     id: 3,
-    title: "Digital Marketing & SEO",
+    title: "Ai Courses",
     coursesCount: "4 Courses",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600",
@@ -35,7 +35,7 @@ function CourseCategories() {
 
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-orange-500 sm:text-4xl lg:text-5xl">
+          <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-theme sm:text-4xl lg:text-5xl">
             Professional IT & Skill Training Courses in Muridke
           </h2>
 
@@ -52,7 +52,7 @@ function CourseCategories() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+              className="group cursor-pointer overflow-hidden rounded-2xl bg-white shadow-theme transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
             >
               {/* Image Box */}
               <div className="relative h-48 w-full overflow-hidden">
@@ -61,12 +61,12 @@ function CourseCategories() {
                   alt={category.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                
+
               </div>
 
               {/* Content Box */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-theme transition-colors">
                   {category.title}
                 </h3>
 
@@ -74,10 +74,9 @@ function CourseCategories() {
                   {category.description}
                 </p>
 
-                <div className="mt-5 flex items-center gap-2 font-semibold text-orange-500 group-hover:text-gray-900 transition-colors">
-                  <span>Explore Courses</span>
-                  <ArrowRightOutlined className="text-sm transition-transform group-hover:translate-x-1" />
-                </div>
+                <div className="mt-5 flex items-center gap-2 font-semibold text-theme group-hover:text-gray-900 transition-colors">
+                 
+                 </div>
               </div>
             </div>
           ))}

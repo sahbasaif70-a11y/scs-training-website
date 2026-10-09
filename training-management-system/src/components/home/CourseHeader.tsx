@@ -3,7 +3,7 @@ function CourseHeader() {
     <section className="bg-gray-50 pt-12 pb-4 sm:pt-16 sm:pb-6">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-[#00a8f3] sm:text-4xl lg:text-5xl">
+          <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-theme sm:text-4xl lg:text-5xl">
             Professional IT & Skill Training Courses in Lahore
           </h2>
 

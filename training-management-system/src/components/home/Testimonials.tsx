@@ -1,9 +1,10 @@
-﻿import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { Carousel } from "antd";
 import {
   StarFilled,
   CheckCircleFilled,
 } from "@ant-design/icons";
+import { useTheme } from "../../context/ThemeContext";
 
 const reviews = [
   {
@@ -42,6 +43,7 @@ const reviews = [
       "The training sessions were informative and practical. I learned new skills and improved my confidence.",
   },
 ];
+
 function GoogleLogoIcon() {
   return (
     <svg className="h-6 w-6" viewBox="0 0 24 24">
@@ -64,6 +66,7 @@ function GoogleLogoIcon() {
     </svg>
   );
 }
+
 function ReviewCard({
   name,
   time,
@@ -76,20 +79,23 @@ function ReviewCard({
   review: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { themeConfig } = useTheme();
+
   return (
     <div className="px-2 py-2">
       <div
-        className={`relative flex flex-col justify-between overflow-hidden rounded-2xl border-t-4 border-orange-500 bg-gray-50/80 p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-lg ${
+        className={`relative flex flex-col justify-between overflow-hidden rounded-2xl border-t-4 ${
+          themeConfig.borderClass
+        } bg-gray-50/80 p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-lg ${
           isExpanded ? "h-auto min-h-[260px]" : "h-[260px]"
         }`}
       >
-
-        {/* Reviewer Header */}
-        <div className="mb-3 flex items-center justify-between">
-
+        {/* Header */}
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-600 font-semibold text-white">
+            <div
+              className={`flex h-11 w-11 items-center justify-center rounded-full ${themeConfig.bgClass} font-semibold text-white shadow-sm`}
+            >
               {initial}
             </div>
 
@@ -97,20 +103,15 @@ function ReviewCard({
               <h4 className="m-0 text-sm font-semibold text-gray-900">
                 {name}
               </h4>
-
-              <p className="m-0 text-xs text-gray-500">
-                {time}
-              </p>
+              <p className="m-0 text-xs text-gray-400">{time}</p>
             </div>
-
           </div>
 
           <GoogleLogoIcon />
-
         </div>
 
-        {/* Stars */}
-        <div className="mb-3 flex items-center gap-1">
+        {/* Stars & Checkmark */}
+        <div className="mt-2 flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <StarFilled
               key={star}
@@ -119,43 +120,60 @@ function ReviewCard({
             />
           ))}
 
-          <CheckCircleFilled className="ml-1 text-base" style={{ color: "#1a73e8" }} />
+          <CheckCircleFilled
+            className="ml-1 text-base"
+            style={{ color: "#1a73e8" }}
+          />
         </div>
 
-        {/* Review */}
-           <p className={`my-3 text-sm leading-relaxed text-gray-600 ${
+        {/* Review Text */}
+        <p
+          className={`my-3 text-sm leading-relaxed text-gray-600 ${
             isExpanded ? "line-clamp-none" : "line-clamp-3"
-          }`
-        }>
-     {review}
-   </p>
-   
+          }`}
+        >
+          {review}
+        </p>
 
-           <button
-     type="button"
-     onClick={() => setIsExpanded(!isExpanded)}
-     className="mt-auto self-start border-0 bg-transparent p-0 text-sm font-medium text-gray-500 hover:text-orange-600 cursor-pointer transition-colors"
-   >
-     {isExpanded ? "Show less" : "Read more"}
-   </button>
-   
-
+        {/* Read More / Show Less Button */}
+        <button
+          type="button"
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-auto self-start border-0 bg-transparent p-0 text-sm font-medium text-gray-500 hover:text-theme cursor-pointer transition-colors"
+        >
+          {isExpanded ? "Show less" : "Read more"}
+        </button>
       </div>
     </div>
   );
 }
 
 function Testimonials() {
+  const [slidesToShow, setSlidesToShow] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSlidesToShow(1);
+      } else if (window.innerWidth < 1024) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(3);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section className="bg-white py-16 sm:py-20">
-
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[220px_1fr]">
 
           {/* Google Rating Summary */}
           <div className="text-center lg:text-left">
-
             <h2 className="mb-2 text-2xl font-bold text-gray-900">
               EXCELLENT
             </h2>
@@ -184,34 +202,19 @@ function Testimonials() {
                 <span style={{ color: "#EA4335" }}>e</span>
               </span>
             </div>
-
           </div>
 
           {/* Review Slider */}
           <div className="min-w-0">
-
             <Carousel
+              key={slidesToShow}
               className="testimonials-carousel"
               autoplay
-              autoplaySpeed={2000}
+              autoplaySpeed={3000}
               dots={false}
               arrows
-              slidesToShow={3}
+              slidesToShow={slidesToShow}
               slidesToScroll={1}
-              responsive={[
-                {
-                  breakpoint: 1024,
-                  settings: {
-                    slidesToShow: 2,
-                  },
-                },
-                {
-                  breakpoint: 640,
-                  settings: {
-                    slidesToShow: 1,
-                  },
-                },
-              ]}
             >
               {reviews.map((review) => (
                 <ReviewCard
@@ -223,13 +226,10 @@ function Testimonials() {
                 />
               ))}
             </Carousel>
-
           </div>
 
         </div>
-
       </div>
-
     </section>
   );
 }

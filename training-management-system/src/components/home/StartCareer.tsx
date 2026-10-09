@@ -61,7 +61,7 @@ function StartCareer() {
 
               {/* Card Title & Description */}
               <div className="mt-6 flex flex-1 flex-col">
-                <h3 className="oswald-font text-2xl font-bold tracking-wide text-[#00a8f3]">
+                <h3 className="oswald-font text-2xl font-bold tracking-wide text-theme">
                   {feature.title}
                 </h3>
 

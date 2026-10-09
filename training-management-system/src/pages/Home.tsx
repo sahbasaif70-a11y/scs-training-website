@@ -1,4 +1,5 @@
 ﻿import HeroCarousel from "../components/home/HeroCarousel";
+import LearningEnvironment from "../components/home/LearningEnvironment";
 import CourseCategories from "../components/home/CourseCategories";
 import StartCareer from "../components/home/StartCareer";
 import Testimonials from "../components/home/Testimonials";
@@ -14,6 +15,9 @@ function Home() {
 
       {/* Course Categories Grid */}
       <CourseCategories />
+
+      {/* Learning Environment Section (Separate Classes for Male & Female) */}
+      <LearningEnvironment />
 
       {/* Start Your IT Career Section */}
       <StartCareer />

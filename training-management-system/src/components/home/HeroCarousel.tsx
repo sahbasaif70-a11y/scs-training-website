@@ -1,32 +1,33 @@
 ﻿import { Carousel } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
+import hero1 from "../../assets/hero-1.png";
+import hero2 from "../../assets/hero-2.png";
+import hero3 from "../../assets/hero-3.png";
+import hero4 from "../../assets/hero-4.png";
 
 const slides = [
   {
-    image:
-      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=2000&q=85",
+    image:hero1,
     smallTitle: "Professional IT & Skill Training",
     title: "Transform Your Future",
     subtitle: "With In-Demand IT Skills",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=85",
+    image:hero2,
     smallTitle: "Learn Modern Technologies",
     title: "Build Skills That Matter",
     subtitle: "Learn. Practice. Grow.",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=2000&q=85",
+    image:hero3,
     smallTitle: "Career-Focused Training",
     title: "Upgrade Your Career",
     subtitle: "Prepare Yourself For The Future",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=2000&q=85",
+    image:hero4,
     smallTitle: "Professional Learning Environment",
     title: "Learn From Professionals",
     subtitle: "Turn Your Potential Into Success",
@@ -34,6 +35,7 @@ const slides = [
 ];
 
 function HeroCarousel() {
+  const { themeConfig } = useTheme();
   return (
     <section className="w-full overflow-hidden">
       <Carousel
@@ -80,7 +82,7 @@ function HeroCarousel() {
                   <Link to="/courses">
                     <button
                       type="button"
-                      className="inline-flex items-center gap-3 rounded-md bg-orange-500 px-7 py-3.5 text-base font-semibold text-white transition hover:bg-sky-600"
+                      className="inline-flex items-center gap-3 rounded-md bg-theme px-7 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 border-0 cursor-pointer"
                     >
                       Explore Courses
                       <ArrowRightOutlined />

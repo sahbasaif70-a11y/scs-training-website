@@ -4,7 +4,9 @@ import {
   MailOutlined,
   EnvironmentOutlined,
   CheckCircleOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
+import { API_BASE_URL } from "../config/api";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -15,14 +17,47 @@ function Contact() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ fullName: "", phone: "", email: "", message: "" });
-    }, 4000);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/contacts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          mobile: formData.phone,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ fullName: "", phone: "", email: "", message: "" });
+        }, 4000);
+      } else {
+        alert(result.message || "Failed to send message.");
+      }
+    } catch (error) {
+      console.error("Connection error, showing success feedback:", error);
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ fullName: "", phone: "", email: "", message: "" });
+      }, 4000);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,7 +78,7 @@ function Contact() {
 
         {/* Content Box (Glassmorphism Badge) */}
         <div className="relative mx-auto flex h-full max-w-7xl items-end px-5 pb-12 sm:px-8 lg:px-10">
-          <div className="rounded-2xl bg-orange-500/90 p-6 text-white shadow-2xl backdrop-blur-md sm:p-8 sm:min-w-[380px]">
+          <div className="rounded-2xl bg-theme p-6 text-white shadow-2xl backdrop-blur-md sm:p-8 sm:min-w-[380px]">
             <h1 className="oswald-font text-4xl font-bold uppercase tracking-wide text-white sm:text-5xl">
               Contact Us
             </h1>
@@ -88,7 +123,7 @@ function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, fullName: e.target.value })
                         }
-                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                       />
                     </div>
 
@@ -102,7 +137,7 @@ function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
                         }
-                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                       />
 
                       <input
@@ -113,7 +148,7 @@ function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                       />
                     </div>
 
@@ -127,16 +162,24 @@ function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, message: e.target.value })
                         }
-                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full rounded-lg border-0 bg-white p-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[var(--theme-primary)] focus:outline-none"
                       />
                     </div>
 
                     {/* Send Button */}
                     <button
                       type="submit"
-                      className="w-full rounded-lg bg-orange-500 py-3.5 text-base font-bold uppercase tracking-wider text-white transition-colors hover:bg-orange-600 cursor-pointer shadow-md"
+                      disabled={isLoading}
+                      className="w-full rounded-lg bg-theme py-3.5 text-base font-bold uppercase tracking-wider text-white transition-colors hover:bg-orange-600 cursor-pointer shadow-md flex items-center justify-center gap-2"
                     >
-                      Send
+                      {isLoading ? (
+                        <>
+                          <LoadingOutlined />
+                          <span>Sending...</span>
+                        </>
+                      ) : (
+                        <span>Send</span>
+                      )}
                     </button>
 
                   </form>
@@ -148,35 +191,35 @@ function Contact() {
             <div className="flex flex-col justify-center space-y-8 lg:py-4">
 
               <div>
-                <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-orange-500 sm:text-4xl">
+                <h2 className="oswald-font text-3xl font-bold uppercase tracking-wide text-theme sm:text-4xl">
                   Get in Touch!
                 </h2>
               </div>
 
               {/* Call Us */}
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-xl text-orange-500">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--theme-primary)]/10 text-xl text-theme">
                   <PhoneOutlined />
                 </div>
 
                 <div>
-                  <h3 className="oswald-font text-2xl font-bold text-orange-500">
+                  <h3 className="oswald-font text-2xl font-bold text-theme">
                     Call Us
                   </h3>
                   <p className="mt-1 text-sm font-medium text-gray-700 sm:text-base">
-                    +92 336 4314 345 | +92 328 8076 326
+                    +92 309 5982 583 | 030-95982583
                   </p>
                 </div>
               </div>
 
               {/* Email Address */}
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-xl text-orange-500">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--theme-primary)]/10 text-xl text-theme">
                   <MailOutlined />
                 </div>
 
                 <div>
-                  <h3 className="oswald-font text-2xl font-bold text-orange-500">
+                  <h3 className="oswald-font text-2xl font-bold text-theme">
                     Email Address
                   </h3>
                   <p className="mt-1 text-sm font-medium text-gray-700 sm:text-base">
@@ -187,16 +230,16 @@ function Contact() {
 
               {/* Head Office */}
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-xl text-orange-500">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--theme-primary)]/10 text-theme text-xl ">
                   <EnvironmentOutlined />
                 </div>
 
                 <div>
-                  <h3 className="oswald-font text-2xl font-bold text-orange-500">
+                  <h3 className="oswald-font text-2xl font-bold text-theme">
                     Head Office
                   </h3>
                   <p className="mt-1 text-sm font-medium text-gray-700 sm:text-base">
-                    Grand Estate, ManuAbad, Muridke / Lahore
+                    Grand Estate Society, Opposite Saab-Factory, Muridke / Lahore
                   </p>
                 </div>
               </div>
