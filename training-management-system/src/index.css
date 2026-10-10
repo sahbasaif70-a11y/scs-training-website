@@ -212,8 +212,8 @@ a {
 }
 .ant-carousel .slick-list {
   overflow: hidden !important;
-  padding-top: 20px;
-  padding-bottom: 10px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .ant-carousel {

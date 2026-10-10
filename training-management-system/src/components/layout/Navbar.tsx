@@ -17,6 +17,7 @@ const trainings = [
   { key: "2", label: "Mobile App Development", id: "2" },
   { key: "3", label: "Social Media Marketing", id: "3" },
   { key: "4", label: "Social Media Management", id: "4" },
+  { key: "5", label: "Lead Generation & Prospecting", id: "5" },
   { key: "6", label: "SEO & Web Optimization", id: "6" },
   { key: "7", label: "ERP Consulting & Implementation", id: "7" },
   { key: "8", label: "AI Video Generation", id: "8" },
@@ -53,17 +54,30 @@ function Navbar() {
   };
 
   const trainingMenu = {
-    items: trainings.map((training) => ({
-      key: training.key,
-      label: (
-        <Link
-          to={`/courses/${training.id}`}
-          className="no-underline text-slate-800 block w-full py-1 hover:text-theme font-medium text-sm transition-colors"
-        >
-          {training.label}
-        </Link>
-      ),
-    })),
+    items: [
+      {
+        key: "all-trainings",
+        label: (
+          <Link
+            to="/trainings"
+            className="no-underline text-theme font-bold block w-full py-1.5 border-b border-gray-100 hover:opacity-80 transition-opacity"
+          >
+            All Trainings & Courses →
+          </Link>
+        ),
+      },
+      ...trainings.map((training) => ({
+        key: training.key,
+        label: (
+          <Link
+            to={`/courses/${training.id}`}
+            className="no-underline text-slate-800 block w-full py-1 hover:text-theme font-medium text-sm transition-colors"
+          >
+            {training.label}
+          </Link>
+        ),
+      })),
+    ],
   };
 
   const getNavItemClass = (isActive: boolean) =>
@@ -148,7 +162,7 @@ function Navbar() {
       </div>
 
       {/* ================= MAIN NAVBAR ================= */}
-      <div className="border-b border-gray-200 bg-white">
+      <div className="bg-white border-b border-gray-100">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
           {/* Logo */}
@@ -193,7 +207,7 @@ function Navbar() {
               About Us
             </Link>
 
-            {/* 3. Trainings Dropdown */}
+            {/* 3. Trainings Dropdown & Link */}
             <Dropdown
               menu={trainingMenu}
               placement="bottom"
